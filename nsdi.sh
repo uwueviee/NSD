@@ -16,9 +16,9 @@ then
   echo "Looking for $1!" 
   mkdir "$1" 
   cd "$1"
-  wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/$1Exists
+  wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/package
   sleep 1
-  if [ -f "$1Exists" ];
+  if [ -f "package" ];
   then
      echo "Found it!"
      cd ..
@@ -26,14 +26,15 @@ then
 	 then
 		 echo "It's already installed!"
 	 else
-	 echo "$1" > packages.txt
 	 cd "$1"
      echo "Downloading $1. Please wait!"
      echo
-     wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/$1Docs
+     wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/docs
      echo "Below is $1's short documentation"
      echo
-     cat "$1Docs"
+     cat "package"
+     echo
+     cat "docs"
      echo
      echo "Is this the package you want? [Y/N]"
      read yn
@@ -41,15 +42,55 @@ then
 		echo
 		echo "Downloading $1!"
 		echo
-		wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/$1Release.tar.gz
-		tar -xzvf "$1Release.tar.gz"
+		wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/deps
+		wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/release.tar.gz
+		tar -xzvf "release.tar.gz"
 		echo
-		if [ -f "$1.sh" ]; then
-			echo "Finshed downloading $1"
-			echo
+		if [ -f "deps" ]; then
+			echo "$1 has dependencies"
+			echo "Checking..."
+			count=$(<deps)
+			cd ..
+			if grep -Fxq "$count" packages.txt
+			then
+				if [ -f "$1.sh" ]; then
+					echo "Finshed downloading $1"
+					echo
+					echo "$1" > packages.txt
+				else
+					echo "Error"
+					echo
+				fi
+			else
+				echo "Looking for $count!" 
+				mkdir "$count" 
+				cd "$count"
+				wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$count/package
+				sleep 1
+				if [ -f "package" ];
+				then
+					wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$count/release.tar.gz
+					tar -xzvf "release.tar.gz"
+					if [ -f "$count.sh" ]; then
+						echo "Finshed downloading $1 & $count"
+						cd ..
+						echo "$1" " " "$count" > packages.txt
+					else
+						echo "Error" 
+					fi
+				else
+					echo "Error" 
+				fi
+			fi
 		else
-			echo "Error"
-			echo
+			if [ -f "$1.sh" ]; then
+				echo "Finshed downloading $1"
+				echo "$1" > packages.txt
+				echo
+			else
+				echo "Error"
+				echo
+			fi
 		fi
      fi
 	 fi
