@@ -1,1 +1,3 @@
-NSD
+##NSD
+
+Bash package manager
