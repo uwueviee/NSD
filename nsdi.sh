@@ -21,6 +21,13 @@ then
   if [ -f "$1Exists" ];
   then
      echo "Found it!"
+     cd ..
+     if grep -Fxq "$1" packages.txt
+	 then
+		 echo "It's already installed!"
+	 else
+	 echo "$1" > packages.txt
+	 cd "$1"
      echo "Downloading $1. Please wait!"
      echo
      wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/$1Docs
@@ -45,6 +52,8 @@ then
 			echo
 		fi
      fi
+	 fi
+
   else
      echo 'Error: Package does not exist'
      echo 'Check over the package name, did you misspell it?'
