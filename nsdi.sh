@@ -16,7 +16,7 @@ then
   echo "Looking for $1!" 
   mkdir "$1" 
   cd "$1"
-  wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/package
+  wget -q https://raw.githubusercontent.com/Noculi/nsd-repo/master/packages/$1/package
   sleep 1
   if [ -f "package" ];
   then
@@ -29,7 +29,7 @@ then
 	 cd "$1"
      echo "Downloading $1. Please wait!"
      echo
-     wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/docs
+     wget -q https://raw.githubusercontent.com/Noculi/nsd-repo/master/packages/$1/docs
      echo "Below is $1's short documentation"
      echo
      cat "package"
@@ -42,8 +42,8 @@ then
 		echo
 		echo "Downloading $1!"
 		echo
-		wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/deps
-		wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$1/release.tar.gz
+		wget -q https://raw.githubusercontent.com/Noculi/nsd-repo/master/packages/$1/deps
+		wget -q https://raw.githubusercontent.com/Noculi/nsd-repo/master/packages/$1/release.tar.gz
 		tar -xzvf "release.tar.gz"
 		echo
 		if [ -f "deps" ]; then
@@ -65,11 +65,11 @@ then
 				echo "Looking for $count!" 
 				mkdir "$count" 
 				cd "$count"
-				wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$count/package
+				wget -q https://raw.githubusercontent.com/Noculi/nsd-repo/master/packages/$count/package
 				sleep 1
 				if [ -f "package" ];
 				then
-					wget -q https://raw.githubusercontent.com/Merryfurr/nsd-repo/master/packages/$count/release.tar.gz
+					wget -q https://raw.githubusercontent.com/Noculi/nsd-repo/master/packages/$count/release.tar.gz
 					tar -xzvf "release.tar.gz"
 					if [ -f "$count.sh" ]; then
 						echo "Finshed downloading $1 & $count"
@@ -97,7 +97,7 @@ then
 
   else
      echo 'Error: Package does not exist'
-     echo 'Check over the package name, did you misspell it?'
+     echo 'Check the package name, did you misspell it?'
      echo
      cd ..
      rm -r "$1"
